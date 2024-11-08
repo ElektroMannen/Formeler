@@ -108,16 +108,6 @@ def kumolativPoisson(k,lamb,t):
 def KumulativFordeling(k,lamb):
     return 1-math.e**(-lamb*k)
 
-#Sample Varians
-def sampleVarians(dataArray):
-    sum = 0
-    teller = 0
-    #beregner summen av data minus gjennomsnitt i andre
-    for i in range (0,len(dataArray)):
-        teller += (dataArray[i]-gjennomsnitt(dataArray))**2
-    nevner = len(dataArray)-1
-    return teller/nevner 
-
 #Standard avvik
 def standardAvik(s):
     return math.sqrt(s)
@@ -129,8 +119,8 @@ def standardNormalFordeling(z):
 
 #Generell normalfordeling
 def GenerellNormalFordeling(x,dataArray):
-    førstehalvdel = 1/(standardAvik(sampleVarians(dataArray))*math.sqrt(2*math.pi))
-    andrehalvdel = math.e**(-((x-gjennomsnitt(dataArray))**2)/(2*sampleVarians(dataArray)))
+    førstehalvdel = 1/(standardAvik(emperiskVarians(dataArray))*math.sqrt(2*math.pi))
+    andrehalvdel = math.e**(-((x-gjennomsnitt(dataArray))**2)/(2*emperiskVarians(dataArray)))
     return førstehalvdel*andrehalvdel
 
 #Generell normalfordeling
@@ -154,7 +144,7 @@ def konfidensiel_Intervall_uten_standardavvik(datasett,prosent):
     alpha = 1 - prosent/100 
     midt = t.ppf(1-(alpha/2),len(datasett)-1)
     midt1 = 2.262
-    bakerst = standardAvik(sampleVarians(datasett))/(math.sqrt(len(datasett)))
+    bakerst = standardAvik(emperiskVarians(datasett))/(math.sqrt(len(datasett)))
     return gjennomsnitt(datasett) + (midt1 * bakerst), gjennomsnitt(datasett) - (midt1 * bakerst), midt
 
 
@@ -163,7 +153,8 @@ def konfidensiel_Intervall_uten_standardavvik(datasett,prosent):
 def rapport(dataSett):
     print("-------------------------------------------\nRapoort for datasett")
     print(f"\nGjennommsnitt: {gjennomsnitt(dataSett)}")
-    print(f"Stokastisk varians: {stokastisk_varians(dataSett)}")
-    print(f"VAR(X): {sampleVarians(dataSett)}")
-    print(f"SD(X): {standardAvik(sampleVarians(dataSett))}")
+    print(f"Emperisk varians: {emperiskVarians(dataSett)}")
+    print(f"VAR(X): ")
+    print(f"SD(X): {standardAvik(emperiskVarians(dataSett))}")
     print("-------------------------------------------\n")
+    return "Rapport printet"
