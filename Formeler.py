@@ -152,9 +152,9 @@ def konfidensiel_Intervall_uten_standardavvik(datasett,prosent):
 # Rapport utskriving av datasett
 def rapport(dataSett):
     print("-------------------------------------------\nRapoort for datasett")
-    print(f"\nGjennommsnitt: {gjennomsnitt(dataSett)}")
-    print(f"Emperisk varians: {emperiskVarians(dataSett)}")
+    print(f"\nGjennommsnitt: {round(gjennomsnitt(dataSett),3)}")
+    print(f"Emperisk varians: {round(emperiskVarians(dataSett),3)}")
     print(f"VAR(X): ")
-    print(f"SD(X): {standardAvik(emperiskVarians(dataSett))}")
+    print(f"SD(X): {round(standardAvik(emperiskVarians(dataSett)),3)}")
     print("-------------------------------------------\n")
     return "Rapport printet"
