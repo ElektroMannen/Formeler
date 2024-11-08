@@ -1,5 +1,5 @@
 import Formeler as fm
-import pandas as pd
+
 
 x = [
 24.3,
