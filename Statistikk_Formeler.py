@@ -5,11 +5,11 @@ from scipy.stats import norm, t
 #-----------------------------
 #Grunnleggende formeler
 #Gjennomsnitt
-def gjennomsnitt(dataArray):
+def gjennomsnitt(dataSett):
     sum = 0
-    for i in range (0, len(dataArray)):
-        sum += dataArray[i]
-    return sum/len(dataArray)
+    for i in range (0,len(dataSett)):
+        sum += dataSett[i]
+    return sum/len(dataSett)
 
 def median(dataSett):
     data = sorted(dataSett)
@@ -39,13 +39,19 @@ def sumXminSnittogYminSnitt(dataSettX, dataSettY):
 def emperiskVarians(dataSett):
     return sum_XiminSnittoppi2(dataSett)/(len(dataSett)-1)
 
-def emperiskStandardaavik(dataSett):
+def standardavvik(dataSett):
     return math.sqrt(emperiskVarians(dataSett))
+
+def standardfeilen(dataSett):
+    return standardavvik(dataSett)/math.sqrt(len(dataSett))
 
 def emperiskKorrelasjon(dataSettX, dataSettY):
     teller = 0
     nevner = math.sqrt(sum_XiminSnittoppi2(dataSettX))*math.sqrt(sum_XiminSnittoppi2(dataSettY))
     return teller/nevner
+
+def estimatKovarians(dataSettX,dataSettY):
+    return sumXminSnittogYminSnitt(dataSettX,dataSettY)/(len(dataSettX)-1)
 
 #Gir ut y vedi hvis det anngies x
 def minsteKvadratsumsRetteLinje(dataSettX,dataSettY, x = None):
@@ -162,9 +168,6 @@ def kumolativPoisson(k,lamb,t):
 def KumulativFordeling(k,lamb):
     return 1-math.e**(-lamb*k)
 
-#Standard avvik
-def standardAvik(s):
-    return math.sqrt(s)
 
 #Standard normalfordeling
 def standardNormalFordeling(z):
@@ -173,7 +176,7 @@ def standardNormalFordeling(z):
 
 #Generell normalfordeling
 def GenerellNormalFordeling(x,dataArray):
-    førstehalvdel = 1/(standardAvik(emperiskVarians(dataArray))*math.sqrt(2*math.pi))
+    førstehalvdel = 1/(standardavvik(dataArray)*math.sqrt(2*math.pi))
     andrehalvdel = math.e**(-((x-gjennomsnitt(dataArray))**2)/(2*emperiskVarians(dataArray)))
     return førstehalvdel*andrehalvdel
 
@@ -182,15 +185,6 @@ def ManuellGenerellNormalFordeling(x,Savik,gjennomsnitt):
 
     return (x-gjennomsnitt)/(Savik)
 
-#Korvanse
-def Korvanse(dataX,dataY,n):
-    teller = 0
-    nevner = 0
-    for i in range(0,len(dataX)):
-        teller += (dataX[i]-gjennomsnitt(dataX))*(dataY[i]-gjennomsnitt(dataY))
-    
-    nevner = len(dataX)-1
-    return teller/nevner
 
 #Konfidensienl intervall
 #-----------------------
@@ -198,37 +192,45 @@ def konfidensiel_Intervall_uten_standardavvik(datasett,prosent):
     alpha = 1 - prosent/100 
     midt = t.ppf(1-(alpha/2),len(datasett)-1)
     midt1 = 2.262
-    bakerst = standardAvik(emperiskVarians(datasett))/(math.sqrt(len(datasett)))
-    return gjennomsnitt(datasett) + (midt1 * bakerst), gjennomsnitt(datasett) - (midt1 * bakerst), midt
+    bakerst = standardavvik(datasett)/(math.sqrt(len(datasett)))
+    return gjennomsnitt(datasett) + (midt1 * bakerst), gjennomsnitt(datasett) - (midt1 * bakerst), gjennomsnitt(datasett) + (2 * bakerst), gjennomsnitt(datasett) - (2 * bakerst)
+
 
 
 #----------------------------
 # Rapport utskriving av datasett
 def rapport(siffer,dataSettX=None, dataSettY = None):
     if (dataSettX != None): 
-        print("-------------------------------------------\nRapoort for datasett")
+        print("-------------------------------------------\nRaport for datasett")
         print("         X verdier")
+        print(f"Antall observasjoner {len(dataSettX)}")
+        print(f"Min og maks: [{min(dataSettX)}, {max(dataSettX)}]")
         print(f"Gjennommsnitt X: {round(gjennomsnitt(dataSettX),siffer)}")
         print(f"Median X: {round(median(dataSettX),siffer)}")
         print(f"Variasjonsbredde X: {round(variasjonsBredde(dataSettX),siffer)}")
         print(f"Emperisk varians X: {round(emperiskVarians(dataSettX),siffer)}")
-        print(f"Emperisk standardavvik X: {round(emperiskStandardaavik(dataSettX),siffer)}")
+        print(f"Standardavvik X {round(standardavvik(dataSettX),siffer)}")
+        print(f"Emperisk standardavvik X: {round(standardfeilen(dataSettX),siffer)}")
         print(f"VAR(X): ")
-        print(f"SD(X): {round(standardAvik(emperiskVarians(dataSettX)),siffer)}")
+        print(f"SE(X): {round(standardfeilen(dataSettX),siffer)}")
         print("-------------------------------------------")
     if (dataSettY != None):
         print("         Y verdier")
+        print(f"Antall observasjoner: {len(dataSettY)}")
+        print(f"Min og maks: [{min(dataSettX)}, {max(dataSettX)}]")
         print(f"Gjennommsnitt Y: {round(gjennomsnitt(dataSettY),siffer)}")
         print(f"Median X: {round(median(dataSettY),siffer)}")
         print(f"Variasjonsbredde Y: {round(variasjonsBredde(dataSettY),siffer)}")
         print(f"Emperisk varians Y: {round(emperiskVarians(dataSettY),siffer)}")
-        print(f"Emperisk standardavvik XY {round(emperiskStandardaavik(dataSettY),siffer)}")
+        print(f"Standardavvik Y {round(standardavvik(dataSettY),siffer)}")
+        print(f"Gjennomsnitt standardavvik Y {round(standardfeilen(dataSettY),siffer)}")
         print(f"VAR(Y): ")
-        print(f"SD(Y): {round(standardAvik(emperiskVarians(dataSettY)),siffer)}")
+        print(f"SE(Y): {round(standardfeilen(dataSettY),siffer)}")
         print("-------------------------------------------")
     if((dataSettX != None) and (dataSettY != None)):
         print("         Felles verdier")
-        print(f"Emperisk korrelasjon er: {round(emperiskKorrelasjon(dataSettX,dataSettY),siffer)}")
+        print(f"Estimert kovarians: Cov(x,y) = {round(estimatKovarians(dataSettX,dataSettY),siffer)}")
+        print(f"Emperisk korrelasjon: r = {round(emperiskKorrelasjon(dataSettX,dataSettY),siffer)}")
         print(f"Minste kvadratsums rette linje (y = a+bx): y = {round(minsteKvadratsumsRetteLinje(dataSettX,dataSettY)[1],siffer)} + {round(minsteKvadratsumsRetteLinje(dataSettX,dataSettY)[2],siffer)}x")
         print("-------------------------------------------\n")
 
