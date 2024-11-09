@@ -17,7 +17,23 @@ def sum_XiminSnittoppi2(dataArray):
     for i in range (0,len(dataArray)):
        sum += (dataArray[i]-snitt)**2
     return sum
+
 #--------------------
+#Emperiske formeler
+
+#Emperisk varians
+def emperiskVarians(dataSett):
+    return sum_XiminSnittoppi2(dataSett)/(len(dataSett)-1)
+
+def emperiskStandardaavik(dataSett):
+    return math.sqrt(emperiskVarians(dataSett))
+
+def emperiskKorrelasjon(dataSettX, datasettY):
+    for i in range (0,len(dataSettX)):
+        teller += (dataSettX[i] - gjennomsnitt(dataSettX))*(datasettY[i] - gjennomsnitt(datasettY))
+    nevner = math.sqrt(dataSettX)*math.sqrt(sum_XiminSnittoppi2(datasettY))
+    return teller/nevner
+
 #Stokastiske formeler
 
 #Biomisk fordeling hvor k er medlemer, n er antall forsøk, p er sjansen for at det 
@@ -66,9 +82,6 @@ def stokastisk_varians(dataSett):
     var = sum_XiminSnittoppi2(dataSett)
     return var 
 
-#Emperisk varians
-def emperiskVarians(dataSett):
-    return sum_XiminSnittoppi2(dataSett)/(len(dataSett)-1)
 
 #Uavhengig
 def uavhengig_Hendelse(Pa,Pb):

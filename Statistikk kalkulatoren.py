@@ -13,4 +13,4 @@ x = [
 23.5,
 23.9]
 
-print(f"Svaret på testen er {sfm.statistikk.rapport(x)}")
+print(f"Svaret på testen er {sfm.stokastisk_variabel_P_mindre_eller_lik(28,100,0.5)}")
