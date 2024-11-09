@@ -202,7 +202,7 @@ def konfidensiel_Intervall_uten_standardavvik(datasett,prosent):
     return gjennomsnitt(datasett) + (midt1 * bakerst), gjennomsnitt(datasett) - (midt1 * bakerst), midt
 
 
-#---------------------------
+#----------------------------
 # Rapport utskriving av datasett
 def rapport(siffer,dataSettX=None, dataSettY = None):
     if (dataSettX != None): 
