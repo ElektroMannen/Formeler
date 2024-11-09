@@ -11,6 +11,16 @@ def gjennomsnitt(dataArray):
         sum += dataArray[i]
     return sum/len(dataArray)
 
+def median(dataSett):
+    data = sorted(dataSett)
+    if ((len(dataSett) % 2) == 1):
+        return data[len(dataSett)//2]
+    else: 
+        return (data[len(dataSett) // 2 - 1] + data[len(dataSett) // 2]) / 2
+    
+def variasjonsBredde(dataSett):
+    return max(dataSett)- min(dataSett)
+
 def sum_XiminSnittoppi2(dataArray):
     snitt = gjennomsnitt(dataArray)
     sum = 0
@@ -18,22 +28,44 @@ def sum_XiminSnittoppi2(dataArray):
        sum += (dataArray[i]-snitt)**2
     return sum
 
+def sumXminSnittogYminSnitt(dataSettX, dataSettY):
+    sum = 0
+    for i in range (0,len(dataSettX)):
+        sum += (dataSettX[i] - gjennomsnitt(dataSettX))*(dataSettY[i] - gjennomsnitt(dataSettY))
+    return sum
 #--------------------
 #Emperiske formeler
 
-#Emperisk varians
 def emperiskVarians(dataSett):
     return sum_XiminSnittoppi2(dataSett)/(len(dataSett)-1)
 
 def emperiskStandardaavik(dataSett):
     return math.sqrt(emperiskVarians(dataSett))
 
-def emperiskKorrelasjon(dataSettX, datasettY):
+def emperiskKorrelasjon(dataSettX, dataSettY):
     teller = 0
-    for i in range (0,len(dataSettX)):
-        teller += (dataSettX[i] - gjennomsnitt(dataSettX))*(datasettY[i] - gjennomsnitt(datasettY))
-    nevner = math.sqrt(sum_XiminSnittoppi2(dataSettX))*math.sqrt(sum_XiminSnittoppi2(datasettY))
+    nevner = math.sqrt(sum_XiminSnittoppi2(dataSettX))*math.sqrt(sum_XiminSnittoppi2(dataSettY))
     return teller/nevner
+
+#Gir ut y vedi hvis det anngies x
+def minsteKvadratsumsRetteLinje(dataSettX,dataSettY, x = None):
+    b = (sumXminSnittogYminSnitt(dataSettX,dataSettY))/(sum_XiminSnittoppi2(dataSettX))
+    a = gjennomsnitt(dataSettY) - (b*gjennomsnitt(dataSettX))
+    if(x != None):
+        y = a + b*x
+        return y,a,b
+    else:
+        return None,a,b
+
+#---------------
+#Heldelser
+def P_AnB(A,B):
+    return A * B
+
+def P_AuB(A,B):
+    return A + B - P_AnB 
+
+
 
 #Stokastiske formeler
 
@@ -82,11 +114,6 @@ def stokastisk_varians(dataSett):
     #Finner variansen
     var = sum_XiminSnittoppi2(dataSett)
     return var 
-
-
-#Uavhengig
-def uavhengig_Hendelse(Pa,Pb):
-    return Pa*Pb
 
 #trekninger uten Trilbakelegging
 def trekkning_Uten_Tilbakelegging(antallValg, trekkninger):
@@ -164,22 +191,32 @@ def konfidensiel_Intervall_uten_standardavvik(datasett,prosent):
 
 #---------------------------
 # Rapport utskriving av datasett
-def rapport(dataSettX=None, dataSettY = None):
+def rapport(siffer,dataSettX=None, dataSettY = None):
     if (dataSettX != None): 
         print("-------------------------------------------\nRapoort for datasett")
-        print(f"\nGjennommsnitt X: {round(gjennomsnitt(dataSettX),3)}")
-        print(f"Emperisk varians X: {round(emperiskVarians(dataSettX),3)}")
+        print("         X verdier")
+        print(f"Gjennommsnitt X: {round(gjennomsnitt(dataSettX),siffer)}")
+        print(f"Median X: {round(median(dataSettX),siffer)}")
+        print(f"Variasjonsbredde X: {round(variasjonsBredde(dataSettX),siffer)}")
+        print(f"Emperisk varians X: {round(emperiskVarians(dataSettX),siffer)}")
+        print(f"Emperisk standardavvik X: {round(emperiskStandardaavik(dataSettX),siffer)}")
         print(f"VAR(X): ")
-        print(f"SD(X): {round(standardAvik(emperiskVarians(dataSettX)),3)}")
-        print("-------------------------------------------\n")
+        print(f"SD(X): {round(standardAvik(emperiskVarians(dataSettX)),siffer)}")
+        print("-------------------------------------------")
     if (dataSettY != None):
-        print(f"Gjennommsnitt Y: {round(gjennomsnitt(dataSettY),3)}")
-        print(f"Emperisk varians Y: {round(emperiskVarians(dataSettY),3)}")
+        print("         Y verdier")
+        print(f"Gjennommsnitt Y: {round(gjennomsnitt(dataSettY),siffer)}")
+        print(f"Median X: {round(median(dataSettY),siffer)}")
+        print(f"Variasjonsbredde Y: {round(variasjonsBredde(dataSettY),siffer)}")
+        print(f"Emperisk varians Y: {round(emperiskVarians(dataSettY),siffer)}")
+        print(f"Emperisk standardavvik XY {round(emperiskStandardaavik(dataSettY),siffer)}")
         print(f"VAR(Y): ")
-        print(f"SD(Y): {round(standardAvik(emperiskVarians(dataSettY)),3)}")
-        print("-------------------------------------------\n")
+        print(f"SD(Y): {round(standardAvik(emperiskVarians(dataSettY)),siffer)}")
+        print("-------------------------------------------")
     if((dataSettX != None) and (dataSettY != None)):
-        print(f"Emperisk korrelasjon er: {round(emperiskKorrelasjon(dataSettX,dataSettY),3)}")
+        print("         Felles verdier")
+        print(f"Emperisk korrelasjon er: {round(emperiskKorrelasjon(dataSettX,dataSettY),siffer)}")
+        print(f"Minste kvadratsums rette linje (y = a+bx): y = {round(minsteKvadratsumsRetteLinje(dataSettX,dataSettY)[1],siffer)} + {round(minsteKvadratsumsRetteLinje(dataSettX,dataSettY)[2],siffer)}x")
         print("-------------------------------------------\n")
 
     return "Rapport printet"
