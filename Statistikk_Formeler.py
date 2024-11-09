@@ -29,9 +29,10 @@ def emperiskStandardaavik(dataSett):
     return math.sqrt(emperiskVarians(dataSett))
 
 def emperiskKorrelasjon(dataSettX, datasettY):
+    teller = 0
     for i in range (0,len(dataSettX)):
         teller += (dataSettX[i] - gjennomsnitt(dataSettX))*(datasettY[i] - gjennomsnitt(datasettY))
-    nevner = math.sqrt(dataSettX)*math.sqrt(sum_XiminSnittoppi2(datasettY))
+    nevner = math.sqrt(sum_XiminSnittoppi2(dataSettX))*math.sqrt(sum_XiminSnittoppi2(datasettY))
     return teller/nevner
 
 #Stokastiske formeler
@@ -163,12 +164,22 @@ def konfidensiel_Intervall_uten_standardavvik(datasett,prosent):
 
 #---------------------------
 # Rapport utskriving av datasett
-def rapport(dataSett):
-    print("-------------------------------------------\nRapoort for datasett")
-    print(f"\nGjennommsnitt: {round(gjennomsnitt(dataSett),3)}")
-    print(f"Emperisk varians: {round(emperiskVarians(dataSett),3)}")
-    print(f"VAR(X): ")
-    print(f"SD(X): {round(standardAvik(emperiskVarians(dataSett)),3)}")
-    print("-------------------------------------------\n")
+def rapport(dataSettX=None, dataSettY = None):
+    if (dataSettX != None): 
+        print("-------------------------------------------\nRapoort for datasett")
+        print(f"\nGjennommsnitt X: {round(gjennomsnitt(dataSettX),3)}")
+        print(f"Emperisk varians X: {round(emperiskVarians(dataSettX),3)}")
+        print(f"VAR(X): ")
+        print(f"SD(X): {round(standardAvik(emperiskVarians(dataSettX)),3)}")
+        print("-------------------------------------------\n")
+    if (dataSettY != None):
+        print(f"Gjennommsnitt Y: {round(gjennomsnitt(dataSettY),3)}")
+        print(f"Emperisk varians Y: {round(emperiskVarians(dataSettY),3)}")
+        print(f"VAR(Y): ")
+        print(f"SD(Y): {round(standardAvik(emperiskVarians(dataSettY)),3)}")
+        print("-------------------------------------------\n")
+    if((dataSettX != None) and (dataSettY != None)):
+        print(f"Emperisk korrelasjon er: {round(emperiskKorrelasjon(dataSettX,dataSettY),3)}")
+        print("-------------------------------------------\n")
 
     return "Rapport printet"
