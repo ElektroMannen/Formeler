@@ -1,4 +1,5 @@
-import Formeler as fm
+import Statistikk_Formeler as sfm
+import Matte_Formeler as mfm
 
 
 x = [
@@ -12,4 +13,4 @@ x = [
 23.5,
 23.9]
 
-print(f"Svaret på testen er {fm.rapport(x)}")
+print(f"Svaret på testen er {sfm.statistikk.rapport(x)}")

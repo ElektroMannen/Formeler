@@ -1,4 +1,4 @@
-import Formeler as fm
+import Statistikk_Formeler as fm
 
 Diameter = [24.3,
 22.1,

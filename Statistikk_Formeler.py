@@ -2,10 +2,8 @@ import math
 from matplotlib import pyplot as plt
 import numpy as np
 from scipy.stats import norm, t
-
 #-----------------------------
 #Grunnleggende formeler
-
 #Gjennomsnitt
 def gjennomsnitt(dataArray):
     sum = 0
@@ -159,5 +157,5 @@ def rapport(dataSett):
     print(f"VAR(X): ")
     print(f"SD(X): {round(standardAvik(emperiskVarians(dataSett)),3)}")
     print("-------------------------------------------\n")
-    
+
     return "Rapport printet"
