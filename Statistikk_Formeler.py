@@ -62,11 +62,24 @@ def minsteKvadratsumsRetteLinje(dataSettX,dataSettY, x = None):
 def P_AnB(A,B):
     return A * B
 
-def P_AuB(A,B):
-    return A + B - P_AnB 
+def P_AuB(A,B,AnB = None):
+    if(AnB != None):
+        return A + B - AnB 
+    else:
+        return A + B - P_AnB(A,B)
 
 
+def P_AIB(A,B,AnB=None):
+    if(AnB != None):
+        return (AnB)/B
+    else:
+        return P_AuB(A,B)/B
 
+def P_BIA(A,B):
+    return (P_AIB(A,B)*B)/A
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#-----Alt under her må testes og skrives på nytt--------
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #Stokastiske formeler
 
 #Biomisk fordeling hvor k er medlemer, n er antall forsøk, p er sjansen for at det 
