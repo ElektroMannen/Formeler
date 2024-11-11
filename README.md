@@ -1,5 +1,3 @@
 # Statistikk formeler
 
-Dette er et repo som er for å lage et eget python bibilotek for å gi meg selv erfaring med formelene til statistikk.
-
-Planen videre er å utvide bibiloteket for matte funksjoner
+This is an amature library for statistics formulas for my own learning. Some parts may not work just yet, but hopehylly it will by christmas. Its also written in norwegian.
