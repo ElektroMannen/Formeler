@@ -42,7 +42,7 @@ def emperiskVarians(dataSett):
 def standardavvik(dataSett):
     return math.sqrt(emperiskVarians(dataSett))
 
-def standardfeilen(dataSett):
+def standardusikkerhet(dataSett):
     return standardavvik(dataSett)/math.sqrt(len(dataSett))
 
 def emperiskKorrelasjon(dataSettX, dataSettY):
@@ -193,7 +193,7 @@ def konfidensiel_Intervall_uten_standardavvik(datasett,prosent):
     midt = t.ppf(1-(alpha/2),len(datasett)-1)
     midt1 = 2.262
     bakerst = standardavvik(datasett)/(math.sqrt(len(datasett)))
-    return gjennomsnitt(datasett) + (midt1 * bakerst), gjennomsnitt(datasett) - (midt1 * bakerst), gjennomsnitt(datasett) + (2 * bakerst), gjennomsnitt(datasett) - (2 * bakerst)
+    return gjennomsnitt(datasett) + (midt * bakerst), gjennomsnitt(datasett) - (midt * bakerst), midt * bakerst, midt
 
 
 
@@ -210,9 +210,9 @@ def rapport(siffer,dataSettX=None, dataSettY = None):
         print(f"Variasjonsbredde X: {round(variasjonsBredde(dataSettX),siffer)}")
         print(f"Emperisk varians X: {round(emperiskVarians(dataSettX),siffer)}")
         print(f"Standardavvik X {round(standardavvik(dataSettX),siffer)}")
-        print(f"Emperisk standardavvik X: {round(standardfeilen(dataSettX),siffer)}")
+        print(f"Standard usikkerheten X: {round(standardusikkerhet(dataSettX),siffer)}")
         print(f"VAR(X): ")
-        print(f"SE(X): {round(standardfeilen(dataSettX),siffer)}")
+        print(f"SE(X): {round(standardusikkerhet(dataSettX),siffer)}")
         print("-------------------------------------------")
     if (dataSettY != None):
         print("         Y verdier")
@@ -223,9 +223,9 @@ def rapport(siffer,dataSettX=None, dataSettY = None):
         print(f"Variasjonsbredde Y: {round(variasjonsBredde(dataSettY),siffer)}")
         print(f"Emperisk varians Y: {round(emperiskVarians(dataSettY),siffer)}")
         print(f"Standardavvik Y {round(standardavvik(dataSettY),siffer)}")
-        print(f"Gjennomsnitt standardavvik Y {round(standardfeilen(dataSettY),siffer)}")
+        print(f"Standard usikkerheten Y {round(standardusikkerhet(dataSettY),siffer)}")
         print(f"VAR(Y): ")
-        print(f"SE(Y): {round(standardfeilen(dataSettY),siffer)}")
+        print(f"SE(Y): {round(standardusikkerhet(dataSettY),siffer)}")
         print("-------------------------------------------")
     if((dataSettX != None) and (dataSettY != None)):
         print("         Felles verdier")
